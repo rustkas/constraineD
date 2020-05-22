@@ -1,4 +1,5 @@
 .DS_Store
-packages
+.packages
 .project
+.dart_tool
 pubspec.lock

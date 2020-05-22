@@ -1,4 +1,3 @@
-part of constrained;
 
 /// empty base class
 abstract class Constraint {

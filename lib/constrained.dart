@@ -1,7 +1,5 @@
-library constrained;
+library constrained_sps;
 
-import "dart:async";
-
-part "constraint.dart";
-part "csp.dart";
-part "backtrack.dart";
+export 'src/backtrack.dart';
+export 'src/constraint.dart';
+export 'src/csp.dart';

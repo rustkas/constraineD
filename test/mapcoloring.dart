@@ -1,10 +1,11 @@
-import "package:constrained/constrained.dart";
+import 'package:constrained_sps/constrained.dart';
 
 class MapColoringConstraint extends BinaryConstraint {
 
   MapColoringConstraint(var variable1, var variable2): super(variable1,
       variable2);
 
+  @override
   bool isSatisfied(Map assignment) {
     // if either variable is not in the assignment then it must be consistent
     // since they still have their domain
@@ -19,35 +20,35 @@ class MapColoringConstraint extends BinaryConstraint {
 
 
 void main() {
-  List variables = ["Western Australia", "Northern Territory",
-      "South Australia", "Queensland", "New South Wales", "Victoria", "Tasmania"];
-  Map domains = {};
+  var variables = ['Western Australia', 'Northern Territory',
+      'South Australia', 'Queensland', 'South Wales', 'Victoria', 'Tasmania'];
+  var domains = {};
   for (var variable in variables) {
-    domains[variable] = ["r", "g", "b"];
+    domains[variable] = ['r', 'g', 'b'];
   }
 
-  CSP mapCSP = new CSP(variables, domains);
+  var mapCSP =  CSP(variables, domains);
 
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Western Australia",
-      "Northern Territory"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Western Australia",
-      "South Australia"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("South Australia",
-      "Northern Territory"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Queensland",
-      "Northern Territory"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Queensland",
-      "South Australia"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Queensland",
-      "New South Wales"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("New South Wales",
-      "South Australia"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Victoria",
-      "South Australia"));
-  mapCSP.addBinaryConstraint(new MapColoringConstraint("Victoria",
-      "New South Wales"));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Western Australia',
+      'Northern Territory'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Western Australia',
+      'South Australia'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('South Australia',
+      'Northern Territory'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Queensland',
+      'Northern Territory'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Queensland',
+      'South Australia'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Queensland',
+      'South Wales'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('South Wales',
+      'South Australia'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Victoria',
+      'South Australia'));
+  mapCSP.addBinaryConstraint(MapColoringConstraint('Victoria',
+      'South Wales'));
 
-  Stopwatch stopwatch = new Stopwatch()
+  var stopwatch = Stopwatch()
     ..start();
   backtrackingSearch(mapCSP, {}).then((solution) {
     print(stopwatch.elapsedMicroseconds);

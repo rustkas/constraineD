@@ -1,41 +1,42 @@
-import "package:constrained/constrained.dart";
+import 'package:constrained_sps/constrained.dart';
 
 class EightQueensConstraint extends ListConstraint {
 
   EightQueensConstraint(var positions) : super(positions);
 
+  @override
   bool isSatisfied(Map assignment) {
-    Iterable d = assignment.values;
+    var d = assignment.values;
 
     // not the most efficient check for attacking each other...
     // better to subtract one from the other and go from there
     for (int q in d) {
-      for (int i = q - 1; q % 8 > i % 8; i--) { //same file backwards
+      for (var i = q - 1; q % 8 > i % 8; i--) { //same file backwards
         if (d.contains(i)) {
           return false;
         }
       }
-      for (int i = q + 1; q % 8 < i % 8; i++) { //same file forwards
+      for (var i = q + 1; q % 8 < i % 8; i++) { //same file forwards
         if (d.contains(i)) {
           return false;
         }
       }
-      for (int i = q - 9; i >= 0 && q % 8 > i % 8; i -= 9) { // diagonal up and back
+      for (var i = q - 9; i >= 0 && q % 8 > i % 8; i -= 9) { // diagonal up and back
         if (d.contains(i)) {
           return false;
         }
       }
-      for (int i = q - 7; i >= 0 && q % 8 < i % 8; i -= 7) { // diagonal up and forward
+      for (var i = q - 7; i >= 0 && q % 8 < i % 8; i -= 7) { // diagonal up and forward
         if (d.contains(i)) {
           return false;
         }
       }
-      for (int i = q + 7; i < 64 && i % 8 < q % 8; i += 7) { // diagonal down and back
+      for (var i = q + 7; i < 64 && i % 8 < q % 8; i += 7) { // diagonal down and back
         if (d.contains(i)) {
           return false;
         }
       }
-      for (int i = q + 9; i < 64 && q % 8 < i % 8; i += 9) { // diagonal down and forward
+      for (var i = q + 9; i < 64 && q % 8 < i % 8; i += 9) { // diagonal down and forward
         if (d.contains(i)) {
           return false;
         }
@@ -48,15 +49,15 @@ class EightQueensConstraint extends ListConstraint {
 }
 
 void drawQueens(Map solution) {
-  String output = "";
-  for (int i = 0; i < 64; i++) {
+  var output = '';
+  for (var i = 0; i < 64; i++) {
     if (solution.values.contains(i)) {
-      output += "Q";
+      output += 'Q';
     } else {
-      output += "X";
+      output += 'X';
     }
     if (i % 8 == 7) {
-      output += "\n";
+      output += '\n';
     }
   }
   print(output);
@@ -64,22 +65,22 @@ void drawQueens(Map solution) {
 
 
 void main() {
-  List variables = [0, 1, 2, 3, 4, 5, 6, 7];
-  Map domains = {};
+  var variables = [0, 1, 2, 3, 4, 5, 6, 7];
+  var domains = {};
   for (int variable in variables) {
-    domains[variable] = new List();
-    for (int i = variable; i < 64; i += 8) {
+    domains[variable] = [];
+    for (var i = variable; i < 64; i += 8) {
       domains[variable].add(i);
     }
   }
 
-  CSP eightQueensCSP = new CSP(variables, domains);
+  var eightQueensCSP = CSP(variables, domains);
 
-  eightQueensCSP.addListConstraint(new EightQueensConstraint(variables));
+  eightQueensCSP.addListConstraint( EightQueensConstraint(variables));
 
-  Stopwatch stopwatch = new Stopwatch()..start();
+  var stopwatch =  Stopwatch()..start();
   backtrackingSearch(eightQueensCSP, {}, mrv: true).then((solution) {
-    print("Took " + stopwatch.elapsed.toString() + " seconds to solve.");
+    print('Took ' + stopwatch.elapsed.toString() + ' seconds to solve.');
     print(solution);
     drawQueens(solution);
   });
